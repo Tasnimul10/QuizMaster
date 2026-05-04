@@ -10,7 +10,11 @@ const paymentRoutes = require('./routes/payments');
 const app = express();
 
 // --- MIDDLEWARE SECTION (Must be BEFORE routes) ---
-app.use(cors()); // Standard cors() is fine, but it MUST be first
+const cors = require('cors');
+app.use(cors({
+  origin: 'https://quizmaster-web.onrender.com',
+  credentials: true
+}));
 app.use(express.json()); 
 
 // --- ROUTES SECTION ---
