@@ -62,7 +62,9 @@ const QuizBuilder = () => {
     }
 
     try {
-      await axios.post('http://localhost:5001/api/quizzes', {
+      // FIX: Removed localhost and used a relative path. 
+      // Axios will automatically use the baseURL you set in AuthContext.js
+      await axios.post('/api/quizzes', {
         title,
         description,
         isFree,
@@ -73,7 +75,9 @@ const QuizBuilder = () => {
       navigate('/teacher-dashboard');
     } catch (err) {
       console.error(err);
-      alert("Failed to create quiz.");
+      // Detailed error logging to help you if it fails again
+      const errorMsg = err.response?.data?.msg || "Failed to create quiz.";
+      alert(errorMsg);
     }
   };
 
