@@ -3,12 +3,14 @@ import axios from 'axios';
 
 export const AuthContext = createContext();
 
+// Set the Base URL here so you don't have to repeat it
+axios.defaults.baseURL = 'https://quiz-master-api-kuj2.onrender.com';
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for token on load
     const token = localStorage.getItem('token');
     const storedUser = localStorage.getItem('user');
     
@@ -29,7 +31,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post('https://quiz-master-api-kuj2.onrender.com', { email, password });
+      // FIX: Added /api/auth/login to the end of the URL
+      const res = await axios.post('/api/auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       setAuthToken(res.data.token);
@@ -42,7 +45,8 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password, role) => {
     try {
-      const res = await axios.post('https://quiz-master-api-kuj2.onrender.com', { name, email, password, role });
+      // FIX: Added /api/auth/register to the end of the URL
+      const res = await axios.post('/api/auth/register', { name, email, password, role });
       return res.data;
     } catch (err) {
       throw err.response?.data?.msg || 'Registration failed';
