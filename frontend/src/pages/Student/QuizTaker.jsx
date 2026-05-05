@@ -13,7 +13,8 @@ const QuizTaker = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const res = await axios.get(`http://localhost:5001/api/quizzes/${id}`);
+        // FIX: Removed localhost, added relative path
+        const res = await axios.get(`/api/quizzes/${id}`);
         setQuiz(res.data);
       } catch (err) {
         console.error(err);
@@ -41,7 +42,8 @@ const QuizTaker = () => {
     }));
 
     try {
-      const res = await axios.post('http://localhost:5001/api/results/submit', {
+      // FIX: Removed localhost, added relative path
+      const res = await axios.post('/api/results/submit', {
         quizId: id,
         answers: formattedAnswers
       });
@@ -86,7 +88,7 @@ const QuizTaker = () => {
               </div>
               <div style={{ background: 'rgba(34, 197, 94, 0.1)', padding: '1rem', borderRadius: '8px' }}>
                 <p style={{ color: 'var(--success)', fontWeight: 'bold' }}>Correct Answer: {q.correctAnswer}</p>
-                <p className="mt-1" style={{ color: 'var(--text-light)' }}><strong>Explanation:</strong> {q.explanation}</p>
+                <p className="mt-1" style={{ color: 'var(--text-light)' }}><strong>Opening Explanation:</strong> {q.explanation}</p>
               </div>
             </div>
           );
