@@ -14,17 +14,19 @@ const StudentDashboard = () => {
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
+        // FIX: Removed http://localhost:5001 from all three requests
+        // Axios uses the baseURL we set in AuthContext.js
         const [quizRes, purchaseRes, resultRes] = await Promise.all([
-          axios.get('http://localhost:5001/api/quizzes'),
-          axios.get('http://localhost:5001/api/payments/my-purchases'),
-          axios.get('http://localhost:5001/api/results/my-results')
+          axios.get('/api/quizzes'),
+          axios.get('/api/payments/my-purchases'),
+          axios.get('/api/results/my-results')
         ]);
         
         setQuizzes(quizRes.data);
         setPurchasedQuizzes(purchaseRes.data);
         setResults(resultRes.data);
       } catch (err) {
-        console.error(err);
+        console.error("Dashboard fetch error:", err);
       } finally {
         setLoading(false);
       }
@@ -44,7 +46,8 @@ const StudentDashboard = () => {
     if (!confirmPurchase) return;
 
     try {
-      await axios.post('http://localhost:5001/api/payments/buy', { quizId, cardDetails: 'mock' });
+      // FIX: Removed localhost, added relative path
+      await axios.post('/api/payments/buy', { quizId, cardDetails: 'mock' });
       alert("Purchase successful!");
       setPurchasedQuizzes([...purchasedQuizzes, quizId]);
     } catch (err) {
@@ -64,7 +67,7 @@ const StudentDashboard = () => {
       <nav className="navbar">
         <div className="nav-brand">QuizMaster Student</div>
         <div className="nav-links">
-          <span className="nav-link">{user.name}</span>
+          <span className="nav-link">{user?.name}</span>
           <button className="btn btn-secondary" onClick={handleLogout}>Logout</button>
         </div>
       </nav>
